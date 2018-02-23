@@ -21,8 +21,9 @@ from tkinter import messagebox
 from pysine import sine
 import time
 import webbrowser
+from threading import Thread
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 
 # Ruta al archivo de configuración
 ARCHIVO_CONFIG = ".config"
@@ -187,7 +188,7 @@ class Gui:
 
         # En caso de que el usuario cierre el programa
         self.ventana.protocol("WM_DELETE_WINDOW", self.guardado)
-        # self.ventana.mainloop()
+        self.ventana.mainloop()
 
     def accion_boton(self, *args):
         if self.sonando:
@@ -264,8 +265,9 @@ def proceso_backend():
             backend.tick()
         else:
             time.sleep(0.01)  # Para que al procesador no le de algo
-        a.ventana.update()
 
+
+hilo_backend = Thread(target=proceso_backend)
+hilo_backend.start()
 
 proceso_gui()
-proceso_backend()
